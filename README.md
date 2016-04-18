@@ -1,1 +1,3 @@
-# robot_in_google_cloud
+# Robot in Google Cloud project
+
+For installation instructions please see project's wiki page
