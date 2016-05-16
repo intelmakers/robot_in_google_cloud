@@ -1,14 +1,19 @@
 import BaseHTTPServer
 
 
+# Python's analog for a static constructor
+def _load_class_data():
+    html = ["Error loading main.html"]
+    with open("main.html", "r") as html:
+        html = html.readlines()
+    with open("favicon.ico", "rb") as favicon:
+        favicon = favicon.read()
+    return html, favicon
+
+
 class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
-    def __init__(self, request, client_address, server):
-        self.html = ["Error loading main.html"]
-        with open("main.html", "r") as html:
-            self.html = html.readlines()
-        with open("favicon.ico", "rb") as favicon:
-            self.favicon = favicon.read()
-        BaseHTTPServer.BaseHTTPRequestHandler.__init__(self, request, client_address, server)
+
+    html, favicon = _load_class_data()
 
     def do_HEAD(self):
         self.send_response(200)
@@ -20,7 +25,7 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", 'image/x-icon')
             self.end_headers()
-            self.wfile.write(self.favicon)
+            self.wfile.write(HTTPRequestHandler.favicon)
             return
 
         if '/camera.jpg' in self.path:
@@ -42,5 +47,5 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
-        for line in self.html:
+        for line in HTTPRequestHandler.html:
             self.wfile.write(line)
