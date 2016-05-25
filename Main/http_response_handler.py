@@ -1,23 +1,14 @@
-import time
 import BaseHTTPServer
-import socket
-
-from camera.camera2D import Camera
-from servo.servo import Servo
-from chassis.sparkfun_board import Sparkfun
-from chassis.development_board import DevBoard
-#CLOUD from cloud.google_cloud import GoogleCloud
+from camera2D import Camera
+from servo import Servo
+from sparkfun_board import Sparkfun
+from development_board import DevBoard
+#CLOUD from google_cloud import GoogleCloud
 
 SERVO_PIN = 0 #14 # or 9
 SERVO_ANG = 90
 
-
-#socket.gethostname() 
-HOST_NAME = '' 
-PORT_NUMBER = 8080  # Maybe set this to 9000.
-print("hostname: " + HOST_NAME)
-
-
+import os
 # get board type
 car =  Sparkfun() #DevBoard() #Sparkfun()
 car.enable_en()
@@ -103,17 +94,3 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.end_headers()
         for line in self.html:
             self.wfile.write(line)
-
-
-if __name__ == '__main__':
-    
-    
-    httpd = BaseHTTPServer.HTTPServer((HOST_NAME, PORT_NUMBER), HTTPRequestHandler)
-    print time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT_NUMBER)
-    try:
-        httpd.serve_forever()
-    except KeyboardInterrupt:
-        pass
-    httpd.server_close()
-    print time.asctime(), "Server Stops - %s:%s" % (HOST_NAME, PORT_NUMBER)
-    
