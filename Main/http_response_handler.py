@@ -1,11 +1,12 @@
 import BaseHTTPServer
+import time
 from camera2D import Camera
 from servo import Servo
 from sparkfun_board import Sparkfun
 from development_board import DevBoard
 #CLOUD from google_cloud import GoogleCloud
 
-SERVO_PIN = 0 #14 # or 9
+SERVO_PIN = 21 #14 # or 9
 SERVO_ANG = 90
 
 import os
@@ -13,12 +14,19 @@ import os
 car =  Sparkfun() #DevBoard() #Sparkfun()
 car.enable_en()
 camera = Camera()
+<<<<<<< HEAD
+
 #CLOUD cloud = GoogleCloud()
+
+=======
+#CLOUD cloud = GoogleCloud()
+>>>>>>> cf8f611ce1f18eb389d7ac3288754dd27f97944e
 servo = Servo()
 #servo.attach(SERVO_PIN)
 
 servo_ang = SERVO_ANG
 servo.write(SERVO_ANG)
+time.sleep(0.05);
 
 class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def __init__(self, request, client_address, server):
@@ -87,8 +95,13 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 			    print "error: no image to remove"
             camera.create_image('camera.jpg')
         
+<<<<<<< HEAD
+#CLOUD        elif self.path == "/send":
+#CLOUD            cloud.annotate('camera.jpg')
+=======
         #CLOUD elif self.path == "/send":
         #CLOUD     cloud.annotate('camera.jpg')
+>>>>>>> cf8f611ce1f18eb389d7ac3288754dd27f97944e
             
         else:
             
