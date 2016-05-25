@@ -2,13 +2,12 @@ import os
 import time
 import BaseHTTPServer
 import socket
-#from server.http_response_handler import HTTPRequestHandler
 
 from camera.camera2D import Camera
 from servo.servo import Servo
 from chassis.sparkfun_board import Sparkfun
 from chassis.development_board import DevBoard
-#from cloud.google_cloud import GoogleCloud
+#CLOUD from cloud.google_cloud import GoogleCloud
 
 SERVO_PIN = 0 #14 # or 9
 SERVO_ANG = 90
@@ -24,7 +23,7 @@ print("hostname: " + HOST_NAME)
 car =  Sparkfun() #DevBoard() #Sparkfun()
 car.enable_en()
 camera = Camera()
-#cloud = GoogleCloud()
+#CLOUD cloud = GoogleCloud()
 servo = Servo()
 #servo.attach(SERVO_PIN)
 
@@ -59,8 +58,12 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", 'image/jpg')
             self.end_headers()
-            with open("camera.jpg", "rb") as camera_file:
-                self.wfile.write(camera_file.read())
+			try:
+				with open("camera.jpg", "rb") as camera_file:
+					self.wfile.write(camera_file.read())
+			except:
+				print "error: failed to access camera.jpg"
+				
             return
 
         global car,camera,servo,cloud,servo_ang
@@ -89,11 +92,15 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             servo.write(servo_ang)
             print 'camera_up:' + str(servo_ang)
         elif self.path == "/camera_center":
-            os.remove('camera.jpg')
+            try:
+				os.remove('camera.jpg')
+			except:
+				print "error: failed to remove camera.jpg"
+
             camera.create_image('camera.jpg')
         
-        #elif self.path == "/send":
-        #    cloud.annotate('camera.jpg')
+        #CLOUD elif self.path == "/send":
+        #CLOUD    cloud.annotate('camera.jpg')
             
         else:
             
