@@ -1,0 +1,134 @@
+<html>
+<header>
+<style media="screen" type="text/css">
+    #header {
+        background-color: black;
+        color: white;
+        text-align: center;
+        padding: 5px;
+    }
+
+    #nav {
+        line-height: 30px;
+        /*background-color: #eeeeee;*/
+        height: 300px;
+        width: 200px;
+        float: left;
+        padding: 5px;
+        text-align: center;
+    }
+
+    #camera_nav {
+        float: left;
+    }
+
+    #camera_pic {
+        float: right;
+    }
+
+    #section {
+        width: auto;
+        float: left;
+        padding: 10px;
+        text-align: center;
+        background-color: #eeeeee;
+    }
+
+    #footer {
+        background-color: black;
+        color: white;
+        clear: both;
+        text-align: center;
+        padding: 5px;
+    }
+
+    a.arrow {
+        /*text-color: xFFF;*/
+        text-decoration: none;
+    }
+
+    table, tr, td {
+        border: 0px solid black;
+        padding: 10px;
+    }
+
+    td {
+        font-size: 200%;
+    }
+
+        td.arrow_left {
+            text-align: right;
+            vertical-align: middle;
+        }
+
+        td.arrow_right {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        td.arrow_up {
+            text-align: center;
+            vertical-align: bottom;
+        }
+
+        td.arrow_down {
+            text-align: center;
+            vertical-align: top;
+        }
+
+        td.arrow_center {
+            text-align: center;
+            vertical-align: middle;
+        }
+</style>
+</header>
+    <body>
+        <div id="header">
+            <h1>Intel Car</h1>
+        </div>
+
+        <div id="nav">
+            <h2>Car Navigation</h2>
+            <table>
+                <tr>
+                    <td class="arrow_left" rowspan="3"><a href="/left" class="arrow">&#8678;</a></td>
+                    <td class="arrow_up"><a href="/up	" class="arrow">&#8679;</a></td>
+                    <td class="arrow_right" rowspan="3"><a href="/right" class="arrow">&#8680;</a></td>
+                </tr>
+                <tr>
+                    <td class="arrow_center"><a href="/stop" class="arrow">&#9642;</a></td>
+                </tr>
+                <tr>
+                    <td class="arrow_down"><a href="/down" class="arrow">&#8681;</a></td>
+                </tr>
+            </table>
+        </div>
+        <div id="section">
+            <h2>Camera</h2>
+            <div id="camera_nav">
+                <table align="center">
+                    <tr>
+                        <td class="arrow_up"><a href="/camera_up" class="arrow">&#8679;</a></td>
+                    </tr>
+                    <tr>
+                        <td class="arrow_center"><a href="/camera_center" class="arrow">&#9642;</a></td>
+                    </tr>
+                    <tr>
+                        <td class="arrow_down"><a href="/camera_down" class="arrow">&#8681;</a></td>
+                    </tr>
+                    <tr>
+                        <td class="arrow_center"><a href="/send" class="arrow">&#9642;</a></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="camera_pic">
+                <img src="camera.jpg" alt="No image form the camera" />
+
+            </div>
+        </div>
+        
+        <div id="footer">
+            Intel Makers
+        </div> />
+</body>
+</html>
