@@ -13,8 +13,8 @@ SERVO_PIN = 0 #14 # or 9
 SERVO_ANG = 90
 
 
-#socket.gethostname() 
-HOST_NAME = '' 
+#socket.gethostname()
+HOST_NAME = ''
 PORT_NUMBER = 8080  # Maybe set this to 9000.
 print("hostname: " + HOST_NAME)
 
@@ -37,9 +37,9 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.html = html.readlines()
         with open("favicon.ico", "rb") as favicon:
             self.favicon = favicon.read()
-        
+
         BaseHTTPServer.BaseHTTPRequestHandler.__init__(self, request, client_address, server)
-        
+
 
     def do_HEAD(self):
         self.send_response(200)
@@ -58,29 +58,29 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", 'image/jpg')
             self.end_headers()
-			try:
+            try:
                 with open("camera.jpg", "rb") as camera_file:
-			        self.wfile.write(camera_file.read())
-			except:
+                    self.wfile.write(camera_file.read())
+            except:
 			    print "error: failed to access camera.jpg"
-				
+
             return
 
         global car,camera,servo,cloud,servo_ang
-        
+
         if self.path == "/up":
             car.go_forward(0.3)
-            
+
         elif self.path == "/down":
             car.go_backward(0.3)
-            
+
         elif self.path == "/right":
             car.turn_right(0.2)
         elif self.path == "/left":
             car.turn_left(0.2)
         elif self.path == "/":
             pass
-        
+
         elif self.path == "/stop":
             car.stop_now()
         elif self.path == "/camera_down":
@@ -93,20 +93,20 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             print 'camera_up:' + str(servo_ang)
         elif self.path == "/camera_center":
             try:
-			    os.remove('camera.jpg')
-			except:
+                os.remove('camera.jpg')
+            except:
 			    print "error: failed to remove camera.jpg"
 
             camera.create_image('camera.jpg')
-        
+
         #CLOUD elif self.path == "/send":
         #CLOUD    cloud.annotate('camera.jpg')
-            
+
         else:
-            
+
             self.send_response(400)
             return
-        
+
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
@@ -115,8 +115,8 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    
-    
+
+
     httpd = BaseHTTPServer.HTTPServer((HOST_NAME, PORT_NUMBER), HTTPRequestHandler)
     print time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT_NUMBER)
     try:
@@ -125,4 +125,3 @@ if __name__ == '__main__':
         pass
     httpd.server_close()
     print time.asctime(), "Server Stops - %s:%s" % (HOST_NAME, PORT_NUMBER)
-    
