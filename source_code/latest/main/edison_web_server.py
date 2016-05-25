@@ -1,13 +1,13 @@
 import time
 import BaseHTTPServer
 import socket
-from server.http_response_handler import HTTPRequestHandler
+#from server.http_response_handler import HTTPRequestHandler
 
 from camera.camera2D import Camera
 from servo.servo import Servo
 from chassis.sparkfun_board import Sparkfun
 from chassis.development_board import DevBoard
-from cloud. google_cloud import GoogleCloud
+#from cloud.google_cloud import GoogleCloud
 
 SERVO_PIN = 0 #14 # or 9
 SERVO_ANG = 90
@@ -23,7 +23,7 @@ print("hostname: " + HOST_NAME)
 car =  Sparkfun() #DevBoard() #Sparkfun()
 car.enable_en()
 camera = Camera()
-cloud = GoogleCloud()
+#cloud = GoogleCloud()
 servo = Servo()
 #servo.attach(SERVO_PIN)
 
@@ -91,8 +91,8 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             os.remove('camera.jpg')
             camera.create_image('camera.jpg')
         
-        elif self.path == "/send":
-            cloud.annotate('camera.jpg')
+        #elif self.path == "/send":
+        #    cloud.annotate('camera.jpg')
             
         else:
             
