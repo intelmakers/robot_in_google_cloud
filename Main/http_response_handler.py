@@ -49,10 +49,10 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.send_header("Content-type", 'image/jpg')
             self.end_headers()
 			try:
-				with open("camera.jpg", "rb") as camera_file:
-					self.wfile.write(camera_file.read())
+		        with open("camera.jpg", "rb") as camera_file:
+			        self.wfile.write(camera_file.read())
 			except:
-				print "error: access to image"
+			    print "error: access to image"
             return
 
         global car,camera,servo,cloud,servo_ang
@@ -82,9 +82,9 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             print 'camera_up:' + str(servo_ang)
         elif self.path == "/camera_center":
             try:
-				os.remove('camera.jpg')
+			    os.remove('camera.jpg')
 			except:
-				print "error: no image to remove"
+			    print "error: no image to remove"
             camera.create_image('camera.jpg')
         
         #CLOUD elif self.path == "/send":

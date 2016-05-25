@@ -59,10 +59,10 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.send_header("Content-type", 'image/jpg')
             self.end_headers()
 			try:
-				with open("camera.jpg", "rb") as camera_file:
-					self.wfile.write(camera_file.read())
+                with open("camera.jpg", "rb") as camera_file:
+			        self.wfile.write(camera_file.read())
 			except:
-				print "error: failed to access camera.jpg"
+			    print "error: failed to access camera.jpg"
 				
             return
 
@@ -93,9 +93,9 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             print 'camera_up:' + str(servo_ang)
         elif self.path == "/camera_center":
             try:
-				os.remove('camera.jpg')
+			    os.remove('camera.jpg')
 			except:
-				print "error: failed to remove camera.jpg"
+			    print "error: failed to remove camera.jpg"
 
             camera.create_image('camera.jpg')
         
