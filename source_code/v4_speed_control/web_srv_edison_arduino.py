@@ -5,7 +5,7 @@ import socket
 
 from camera.camera2D import Camera
 from servo.servo import Servo
-from chassis.sparkfun_board import Sparkfun
+#from chassis.sparkfun_board import Sparkfun
 from chassis.development_board import DevBoard
 #CLOUD from cloud.google_cloud import GoogleCloud
 
@@ -20,7 +20,7 @@ print("hostname: " + HOST_NAME)
 
 
 # get board type
-car =  Sparkfun() #DevBoard() #Sparkfun()
+car =  DevBoard() #DevBoard() #Sparkfun()
 car.enable_en()
 camera = Camera()
 #CLOUD cloud = GoogleCloud()
@@ -69,15 +69,19 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         global car,camera,servo,cloud,servo_ang
 
         if self.path == "/up":
-            car.go_forward(0.3)
+            car.go_forward(0.5)
 
         elif self.path == "/down":
-            car.go_backward(0.3)
+            car.go_backward(0.5)
 
         elif self.path == "/right":
-            car.turn_right(0.2)
+            car.turn_right(1.0)
+            time.sleep(0.5)
+            car.stop_gradually()
         elif self.path == "/left":
-            car.turn_left(0.2)
+            car.turn_left(1.0)
+            time.sleep(0.5)
+            car.stop_gradually()
         elif self.path == "/":
             pass
 

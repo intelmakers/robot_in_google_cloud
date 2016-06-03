@@ -6,10 +6,10 @@ import BaseHTTPServer
 from camera.camera2D import Camera
 from chassis.chassis_sparkfun import chassis
 
-HOST_NAME = socket.gethostname() 
+HOST_NAME = socket.gethostname()
 PORT_NUMBER = 8080  # Maybe set this to 9000.
 print("hostname: " + HOST_NAME)
-HOST_NAME = "192.168.1.4"
+HOST_NAME = ""
 
 camera = Camera()
 chassis = chassis()
@@ -21,14 +21,14 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 	self.html = ["Error loading main.html"]
         with open("main.html", "r") as html:
             self.html = html.readlines()
-	
+
         #with open("favicon.ico", "rb") as favicon:
         #    self.favicon = favicon.read()
-        
+
 	self._camera = camera
         self._car = chassis
         BaseHTTPServer.BaseHTTPRequestHandler.__init__(self, request, client_address, server)
-        
+
 
     def do_HEAD(self):
         self.send_response(200)
@@ -42,12 +42,12 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             #self.end_headers()
             #self.wfile.write(self.favicon)
             return
-		
+
         if '/camera.jpg' in self.path:
 	    try:
             	os.remove('camera.jpg')
 	    except Exception as e:
-		pass 
+		pass
 
 	    try:
                 camera.create_image('camera.jpg')
@@ -62,19 +62,19 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 	    except Exception as e:
 		pass
             return
-		
+
         if self.path == "/up":
             self._car.go_forward(0.3)
         elif self.path == "/down":
             self._car.go_backward(0.3)
         elif self.path == "/right":
             self._car.turn_right(0.2)
-	    time.sleep(0.5)
-	    self._car.stop_gradually()
+            time.sleep(0.5)
+            self._car.stop_gradually()
         elif self.path == "/left":
-            self._car.turn_left(0.2)
-	    time.sleep(0.5)
-	    self._car.stop_gradually()
+            self._car.turn_left(0)
+            time.sleep(0.5)
+            self._car.stop_gradually()
         elif self.path == "/":
             pass
         elif self.path == "/stop":
@@ -83,14 +83,14 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         else:
             self.send_response(400)
             return
-        
+
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
         for line in self.html:
             self.wfile.write(line)
 
-			
+
 httpd = BaseHTTPServer.HTTPServer((HOST_NAME, PORT_NUMBER), HTTPRequestHandler)
 print time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT_NUMBER)
 try:
