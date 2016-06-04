@@ -37,8 +37,13 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.html = html.readlines()
         with open("favicon.ico", "rb") as favicon:
             self.favicon = favicon.read()
-
         BaseHTTPServer.BaseHTTPRequestHandler.__init__(self, request, client_address, server)
+	
+	def _update_speed(self):
+		for idx,ln in enumerate(self.html):
+			if(ln.find("Speed:") >0):
+				#self.html[idx]="<br>Speed: {}</br>".format(car.speed)
+				break
 
 
     def do_HEAD(self):
@@ -84,7 +89,14 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             car.stop_gradually()
         elif self.path == "/":
             pass
-
+        elif self.path == "/speed_up":
+			if(car.speed < 1.0):
+				car.speed += 0.1
+			self._update_speed()
+        elif self.path == "/speed_down":
+			if(car.speed > 0):
+				car.speed -= 0.1
+			self._update_speed()
         elif self.path == "/stop":
             car.stop_now()
         elif self.path == "/camera_down":
