@@ -10,17 +10,17 @@ import time
 from robotcar import RobotCar 
 
 class DevBoard(RobotCar):
-    pin_mtr_en_a = 2 #~
+    pin_mtr_en_a = 2
     pin_mtr_a_0 = 3     
     pin_mtr_a_1 = 5     
-    pin_mtr_en_b = 4 #~
+    pin_mtr_en_b = 4
     pin_mtr_b_0 = 6     
     pin_mtr_b_1 = 9
     speed = 0.5
     def __init__(self):
         # A
         print "init...."
-		self._enA = mraa.Gpio(self.pin_mtr_en_a)
+	self._enA = mraa.Gpio(self.pin_mtr_en_a)
         self._enA.dir(mraa.DIR_OUT)
        
         self._sideA_0 = mraa.Pwm(self.pin_mtr_a_0)

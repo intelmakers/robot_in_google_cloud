@@ -9,7 +9,7 @@ from servo.servo import Servo
 from chassis.development_board import DevBoard
 #CLOUD from cloud.google_cloud import GoogleCloud
 
-SERVO_PIN = 0 #14 # or 9
+SERVO_PIN = 9
 SERVO_ANG = 90
 
 
@@ -35,23 +35,31 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.html = ["Error loading main.html"]
         with open("main.html", "r") as html:
             self.html = html.readlines()
+        self._update_speed()
         with open("favicon.ico", "rb") as favicon:
             self.favicon = favicon.read()
         BaseHTTPServer.BaseHTTPRequestHandler.__init__(self, request, client_address, server)
-	
-	def _update_speed(self):
-		for idx,ln in enumerate(self.html):
-			if(ln.find("Speed:") >0):
-				#self.html[idx]="<br>Speed: {}</br>".format(car.speed)
-				break
-
-
+    def _update_speed(self):
+        for idx,ln in enumerate(self.html):
+            if(ln.find("Speed") >0):
+                self.html[idx]="<br>Speed {}</br>".format(car.speed)
+                break
     def do_HEAD(self):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
 
+    def refresh_image(self):
+        global camera
+        try:
+			os.remove('camera.jpg')
+        except:
+			print "error: failed to remove camera.jpg"
+        camera.create_image('camera.jpg')
+
     def do_GET(self):
+        global car,camera,servo,cloud,servo_ang
+
         if '/favicon.ico' in self.path:
             self.send_response(200)
             self.send_header("Content-type", 'image/x-icon')
@@ -71,51 +79,50 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
             return
 
-        global car,camera,servo,cloud,servo_ang
 
         if self.path == "/up":
-            car.go_forward(0.5)
-
+            car.go_forward(car.speed)
+            self.refresh_image()
         elif self.path == "/down":
-            car.go_backward(0.5)
-
+            car.go_backward(car.speed)
+            self.refresh_image()
         elif self.path == "/right":
             car.turn_right(1.0)
             time.sleep(0.5)
             car.stop_gradually()
+            self.refresh_image()
         elif self.path == "/left":
             car.turn_left(1.0)
             time.sleep(0.5)
             car.stop_gradually()
+            self.refresh_image()
         elif self.path == "/":
             pass
         elif self.path == "/speed_up":
-			if(car.speed < 1.0):
+			if(car.speed < 0.8):
 				car.speed += 0.1
 			self._update_speed()
         elif self.path == "/speed_down":
-			if(car.speed > 0):
+			if(car.speed > 0.2):
 				car.speed -= 0.1
 			self._update_speed()
         elif self.path == "/stop":
             car.stop_now()
+            self.refresh_image()
         elif self.path == "/camera_down":
+            print 'camera_down:' + str(servo_ang)
             servo_ang -=2
             servo.write(servo_ang)
-            print 'camera_down:' + str(servo_ang)
+            self.refresh_image()
         elif self.path == "/camera_up":
+            print 'camera_up:' + str(servo_ang)
             servo_ang +=2
             servo.write(servo_ang)
-            print 'camera_up:' + str(servo_ang)
+            self.refresh_image()
         elif self.path == "/camera_center":
-            try:
-                os.remove('camera.jpg')
-            except:
-			    print "error: failed to remove camera.jpg"
-
-            camera.create_image('camera.jpg')
-
-        #CLOUD elif self.path == "/send":
+            self.refresh_image()
+        elif self.path == "/send":
+			pass
         #CLOUD    cloud.annotate('camera.jpg')
 
         else:
