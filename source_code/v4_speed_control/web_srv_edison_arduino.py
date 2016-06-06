@@ -52,9 +52,9 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def refresh_image(self):
         global camera
         try:
-			os.remove('camera.jpg')
+            os.remove('camera.jpg')
         except:
-			print "error: failed to remove camera.jpg"
+            print "error: failed to remove camera.jpg"
         camera.create_image('camera.jpg')
 
     def do_GET(self):
@@ -99,7 +99,7 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         elif self.path == "/":
             pass
         elif self.path == "/speed_up":
-			if(car.speed < 0.8):
+			if(car.speed < 1.3):
 				car.speed += 0.1
 			self._update_speed()
         elif self.path == "/speed_down":
@@ -140,8 +140,6 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-
-
     httpd = BaseHTTPServer.HTTPServer((HOST_NAME, PORT_NUMBER), HTTPRequestHandler)
     print time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT_NUMBER)
     try:
