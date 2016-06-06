@@ -25,7 +25,7 @@ car.enable_en()
 camera = Camera()
 #CLOUD cloud = GoogleCloud()
 servo = Servo()
-#servo.attach(SERVO_PIN)
+servo.attach(SERVO_PIN)
 
 servo_ang = SERVO_ANG
 servo.write(SERVO_ANG)
@@ -111,13 +111,15 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.refresh_image()
         elif self.path == "/camera_down":
             print 'camera_down:' + str(servo_ang)
-            servo_ang -=2
+            servo_ang +=3
             servo.write(servo_ang)
+            time.sleep(0.5)
             self.refresh_image()
         elif self.path == "/camera_up":
             print 'camera_up:' + str(servo_ang)
-            servo_ang +=2
+            servo_ang -=3
             servo.write(servo_ang)
+            time.sleep(0.5)
             self.refresh_image()
         elif self.path == "/camera_center":
             self.refresh_image()
