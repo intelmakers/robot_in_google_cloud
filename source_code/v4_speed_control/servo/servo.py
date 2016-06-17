@@ -69,25 +69,14 @@ class Servo:
          
         self._pinAttached = int(pin)  
         
-        '''            
-        if pin in [3, 5, 6, 9,13]: 
-            self._pinAttached = pin 
-        else: 
-            while True: # Keep asking for a valid pin. 
-                print "The pin '" + str(pin) + "' is not a valid input. The valid pins are 3, 5, 6 or 9." 
-                pin = raw_input("Select a valid pin: ") 
-                if pin in ["3", "5", "6", "9"]: 
-                    pin = int(pin) 
-                    self._pinAttached = pin 
-                    break 
- '''
  
-         # Configure the selected pin as PWM output. 
+        # Configure the selected pin as PWM output. 
         if self._pinAttached != None: 
             self._pwm = mraa.Pwm(self._pinAttached) 
             self._pwm.period(self._period) 
             self._pwm.enable(True) 
             self._pwm.write((self._uSecs/1000000.0)/self._period) 
+
     def writeMicroseconds(self, uSecs): 
         """ 
              Sets the servo pulse width in microseconds. 

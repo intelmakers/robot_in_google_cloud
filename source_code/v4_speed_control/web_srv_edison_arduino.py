@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 import time
 import BaseHTTPServer
@@ -39,11 +41,13 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         with open("favicon.ico", "rb") as favicon:
             self.favicon = favicon.read()
         BaseHTTPServer.BaseHTTPRequestHandler.__init__(self, request, client_address, server)
+    
     def _update_speed(self):
         for idx,ln in enumerate(self.html):
             if(ln.find("Speed") >0):
                 self.html[idx]="<br>Speed {}</br>".format(car.speed)
                 break
+    
     def do_HEAD(self):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
@@ -65,7 +69,6 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.send_header("Content-type", 'image/x-icon')
             self.end_headers()
             self.wfile.write(self.favicon)
-            return
 
         if '/camera.jpg' in self.path:
             self.send_response(200)
@@ -75,9 +78,7 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 with open("camera.jpg", "rb") as camera_file:
                     self.wfile.write(camera_file.read())
             except:
-			    print "error: failed to access camera.jpg"
-
-            return
+                print "error: failed to access camera.jpg"
 
 
         if self.path == "/up":
@@ -88,47 +89,45 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.refresh_image()
         elif self.path == "/right":
             car.turn_right(1.0)
-            time.sleep(0.5)
+            time.sleep(0.3)
             car.stop_gradually()
             self.refresh_image()
         elif self.path == "/left":
             car.turn_left(1.0)
-            time.sleep(0.5)
+            time.sleep(0.3)
             car.stop_gradually()
             self.refresh_image()
         elif self.path == "/":
             pass
         elif self.path == "/speed_up":
-			if(car.speed < 1.3):
-				car.speed += 0.1
-			self._update_speed()
+            if(car.speed < 1.5):
+                car.speed += 0.1
+            self._update_speed()
         elif self.path == "/speed_down":
-			if(car.speed > 0.2):
-				car.speed -= 0.1
-			self._update_speed()
+            if(car.speed > 0.5):
+                car.speed -= 0.1
+            self._update_speed()
         elif self.path == "/stop":
             car.stop_now()
             self.refresh_image()
         elif self.path == "/camera_down":
             print 'camera_down:' + str(servo_ang)
-            servo_ang +=3
+            servo_ang -=10
             servo.write(servo_ang)
             time.sleep(0.5)
             self.refresh_image()
         elif self.path == "/camera_up":
             print 'camera_up:' + str(servo_ang)
-            servo_ang -=3
+            servo_ang +=10
             servo.write(servo_ang)
             time.sleep(0.5)
             self.refresh_image()
         elif self.path == "/camera_center":
             self.refresh_image()
         elif self.path == "/send":
-			pass
-        #CLOUD    cloud.annotate('camera.jpg')
-
+            pass
+            #cloud.annotate('camera.jpg')
         else:
-
             self.send_response(400)
             return
 

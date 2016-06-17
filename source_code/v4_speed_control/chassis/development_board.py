@@ -54,6 +54,7 @@ class DevBoard(RobotCar):
     
     
     def go_backward(self, speed = 0.5): 
+        print "go backward"
         self.speed = speed
         self._enA.write(speed)
         self._enB.write(speed)
@@ -65,6 +66,7 @@ class DevBoard(RobotCar):
         self._sideB_1.write(1)
         
     def go_forward(self, speed = 0.5): 
+        print "go forward"
         self.speed = speed
         self._enA.write(speed)
         self._enB.write(speed)
@@ -87,7 +89,7 @@ class DevBoard(RobotCar):
         self._enA.write(speed)
         self._enB.write(speed)
         
-        dir = self._get_dir()
+        #dir = self._get_dir()
         self._sideA_0.write(1)
         self._sideA_1.write(0)
         
